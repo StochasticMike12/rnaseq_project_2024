@@ -46,3 +46,8 @@ expresión-diferencial-2
 modelo-estadístico-2
 librerías-1
 conclusiones
+fomateo-1
+variable-categórica-1
+filtrado-1
+expresión-diferencial-3
+modelo-estadístico-3
