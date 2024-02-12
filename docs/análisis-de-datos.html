@@ -176,6 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="análisis-de-datos.html"><a href="análisis-de-datos.html#modelo-estadístico"><i class="fa fa-check"></i><b>6.2</b> Modelo estadístico</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
+<li class="chapter" data-level="8" data-path="librerías-1.html"><a href="librerías-1.html"><i class="fa fa-check"></i><b>8</b> Librerías</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -298,7 +299,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb46-7"><a href="análisis-de-datos.html#cb46-7" tabindex="-1"></a>    <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb46-8"><a href="análisis-de-datos.html#cb46-8" tabindex="-1"></a>    <span class="at">annotation_col =</span> df</span>
 <span id="cb46-9"><a href="análisis-de-datos.html#cb46-9" tabindex="-1"></a>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/heatmap-1.png" width="672" /></p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="análisis-de-datos.html#cb47-1" tabindex="-1"></a><span class="co"># Conviertiendo los grupos de infección en colores</span></span>
 <span id="cb47-2"><a href="análisis-de-datos.html#cb47-2" tabindex="-1"></a>col.group <span class="ot">&lt;-</span> df<span class="sc">$</span>Infection_time</span>
 <span id="cb47-3"><a href="análisis-de-datos.html#cb47-3" tabindex="-1"></a><span class="fu">levels</span>(col.group) <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="fu">nlevels</span>(col.group), <span class="st">&quot;Set1&quot;</span>)</span>

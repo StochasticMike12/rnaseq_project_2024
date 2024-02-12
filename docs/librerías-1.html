@@ -4,7 +4,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Conclusiones | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva</title>
+  <title>Chapter 8 Librerías | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva</title>
   <meta name="description" content="<p>Proyecto final del módulo 1 “Análisis de datos de secuenciación masiva” del
 curso de Bioinformática y estadística 2 de la Licenciatura en Ciencias
 Genómicas.
@@ -13,7 +13,7 @@ de RNA-seq utilizando diversos paquetes de R para finalmente llegar a
 conclusiones sobre el estudio a analizar.</p>" />
   <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Conclusiones | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
+  <meta property="og:title" content="Chapter 8 Librerías | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>Proyecto final del módulo 1 “Análisis de datos de secuenciación masiva” del
@@ -25,7 +25,7 @@ conclusiones sobre el estudio a analizar.</p>" />
   <meta name="github-repo" content="https://github.com/StochasticMike12/rnaseq_project_2024" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Conclusiones | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
+  <meta name="twitter:title" content="Chapter 8 Librerías | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
   
   <meta name="twitter:description" content="<p>Proyecto final del módulo 1 “Análisis de datos de secuenciación masiva” del
 curso de Bioinformática y estadística 2 de la Licenciatura en Ciencias
@@ -45,7 +45,7 @@ conclusiones sobre el estudio a analizar.</p>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="análisis-de-datos.html"/>
+<link rel="prev" href="conclusiones.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -176,6 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="análisis-de-datos.html"><a href="análisis-de-datos.html#modelo-estadístico"><i class="fa fa-check"></i><b>6.2</b> Modelo estadístico</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
+<li class="chapter" data-level="8" data-path="librerías-1.html"><a href="librerías-1.html"><i class="fa fa-check"></i><b>8</b> Librerías</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -196,9 +197,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="conclusiones" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Conclusiones<a href="conclusiones.html#conclusiones" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Como se menciona en el paper original se observa notablemente que la infección con el virus Herpes tipo 1 sobreexpresa ciertos genes en las células, lo cual se puede confirmar en la penúltima gráfica, donde se observan claramente clusters bien delimitados de acuerdo al momento de la infección, en esa gráfica junto con el boxplots del momento de infección también se logra apreciar que existe un mayor rango de variación en la expresión de genes estos genes en células no infectadas. También, en la última gráfica se puede apreciar que existe una diferencia un tanto marcada en la expresión de genes de células infectadas modificadas con CRISPR/Cas con respecto a las que no, pudiendose observar pequeños minicluster dentro de los tres cluster principales de células infectadas. En conclusión el Herpes simplex tipo 1 aumenta de manera bien marcada la expresión de ciertos genes de acuerdo al momento y tiempo transcrurrido desde la infección, además de que el nivel de expresión también dependende de si la célula ha sido modificada genéticamente o no con CRISPR/Cas.</p>
+<div id="librerías-1" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Librerías<a href="librerías-1.html#librerías-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Aquí se muestran las librerías utilizadas para el análisis de los datos del proyecto.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="librerías-1.html#cb51-1" tabindex="-1"></a><span class="co"># Cargar librerías</span></span>
+<span id="cb51-2"><a href="librerías-1.html#cb51-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;RColorBrewer&quot;</span>)</span>
+<span id="cb51-3"><a href="librerías-1.html#cb51-3" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;recount3&quot;</span>)</span>
+<span id="cb51-4"><a href="librerías-1.html#cb51-4" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;edgeR&quot;</span>)</span>
+<span id="cb51-5"><a href="librerías-1.html#cb51-5" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;limma&quot;</span>)</span>
+<span id="cb51-6"><a href="librerías-1.html#cb51-6" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb51-7"><a href="librerías-1.html#cb51-7" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;pheatmap&quot;</span>)</span>
+<span id="cb51-8"><a href="librerías-1.html#cb51-8" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
+
+
+
+
+
+
 
 </div>
             </section>
@@ -206,7 +221,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="análisis-de-datos.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusiones.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -238,7 +253,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-librerias.Rmd",
 "text": "Edit"
 },
 "history": {
