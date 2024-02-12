@@ -4,7 +4,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Normalización | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva</title>
+  <title>Chapter 3 Cargar datos | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva</title>
   <meta name="description" content="<p>Proyecto final del módulo 1 “Análisis de datos de secuenciación masiva” del
 curso de Bioinformática y estadística 2 de la Licenciatura en Ciencias
 Genómicas.
@@ -13,7 +13,7 @@ de RNA-seq utilizando diversos paquetes de R para finalmente llegar a
 conclusiones sobre el estudio a analizar.</p>" />
   <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Normalización | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
+  <meta property="og:title" content="Chapter 3 Cargar datos | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>Proyecto final del módulo 1 “Análisis de datos de secuenciación masiva” del
@@ -25,7 +25,7 @@ conclusiones sobre el estudio a analizar.</p>" />
   <meta name="github-repo" content="https://github.com/StochasticMike12/rnaseq_project_2024" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Normalización | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
+  <meta name="twitter:title" content="Chapter 3 Cargar datos | Proyecto Final Módulo 1: Análisis de datos de secuenciación masiva" />
   
   <meta name="twitter:description" content="<p>Proyecto final del módulo 1 “Análisis de datos de secuenciación masiva” del
 curso de Bioinformática y estadística 2 de la Licenciatura en Ciencias
@@ -45,8 +45,8 @@ conclusiones sobre el estudio a analizar.</p>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="procesamiento-de-datos.html"/>
-<link rel="next" href="análisis-de-datos.html"/>
+<link rel="prev" href="librerías.html"/>
+<link rel="next" href="procesamiento-de-datos.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -176,6 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="análisis-de-datos.html"><a href="análisis-de-datos.html#modelo-estadístico"><i class="fa fa-check"></i><b>6.2</b> Modelo estadístico</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>7</b> Conclusiones</a></li>
+<li class="chapter" data-level="8" data-path="librerías-1.html"><a href="librerías-1.html"><i class="fa fa-check"></i><b>8</b> Librerías</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -196,22 +197,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="normalización" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Normalización<a href="normalización.html#normalización" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Normalizar los datos con la librería edgeR.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="normalización.html#cb33-1" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(</span>
-<span id="cb33-2"><a href="normalización.html#cb33-2" tabindex="-1"></a>    <span class="at">counts =</span> <span class="fu">assay</span>(rse_gene_SRP102444, <span class="st">&quot;counts&quot;</span>),</span>
-<span id="cb33-3"><a href="normalización.html#cb33-3" tabindex="-1"></a>    <span class="at">genes =</span> <span class="fu">rowData</span>(rse_gene_SRP102444)</span>
-<span id="cb33-4"><a href="normalización.html#cb33-4" tabindex="-1"></a>)</span>
-<span id="cb33-5"><a href="normalización.html#cb33-5" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(dge)</span></code></pre></div>
+<div id="cargar-datos" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Cargar datos<a href="cargar-datos.html#cargar-datos" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Cargar datos de entrada.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="cargar-datos.html#cb2-1" tabindex="-1"></a>human_projects <span class="ot">&lt;-</span> <span class="fu">available_projects</span>()</span>
+<span id="cb2-2"><a href="cargar-datos.html#cb2-2" tabindex="-1"></a>rse_gene_SRP102444 <span class="ot">&lt;-</span> <span class="fu">create_rse</span>(</span>
+<span id="cb2-3"><a href="cargar-datos.html#cb2-3" tabindex="-1"></a>    <span class="fu">subset</span>(</span>
+<span id="cb2-4"><a href="cargar-datos.html#cb2-4" tabindex="-1"></a>        human_projects,</span>
+<span id="cb2-5"><a href="cargar-datos.html#cb2-5" tabindex="-1"></a>        project <span class="sc">==</span> <span class="st">&quot;SRP102444&quot;</span> <span class="sc">&amp;</span> project_type <span class="sc">==</span> <span class="st">&quot;data_sources&quot;</span></span>
+<span id="cb2-6"><a href="cargar-datos.html#cb2-6" tabindex="-1"></a>    )</span>
+<span id="cb2-7"><a href="cargar-datos.html#cb2-7" tabindex="-1"></a>)</span></code></pre></div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="procesamiento-de-datos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="análisis-de-datos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="librerías.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="procesamiento-de-datos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
