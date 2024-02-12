@@ -1,0 +1,238 @@
+# Procesamiento de datos
+
+## Fomateo
+
+Convertir las cuentas crudas a cuentas por lectura.
+
+```{r step1}
+assay(rse_gene_SRP102444, "counts") <- compute_read_counts(rse_gene_SRP102444)
+```
+
+Checar el número y propiedades de las muestras.
+```{r step2, echo=TRUE}
+rse_gene_SRP102444$sra.sample_attributes
+```
+
+Existen 26 muestras.
+
+Verificar que los atributos de las muestras sean consistentes.
+```{r step3, echo=TRUE}
+objeto<-26
+for(elemento in objeto) {
+    print(elemento)
+    print(glimpse(strsplit(rse_gene_SRP102444$sra.sample_attributes[elemento], "\\|")))
+}
+```
+
+Como se puede apreciar hay algunas muestras que no tienen el atributo "cell line", por lo que serán removidas.
+```{r step4}
+rse_gene_SRP102444$sra.sample_attributes <- gsub("cell line;;HeLa\\|", "", rse_gene_SRP102444$sra.sample_attributes)
+```
+
+También podemos darnos cuenta de que algunos atributos tienen espacios en sus nombre por lo que se renombrarán para evitar problemas con sus nombres posteriormente en el análisis.
+```{r step5}
+rse_gene_SRP102444$sra.sample_attributes<-gsub("4su treatment", "4su_treatment", rse_gene_SRP102444$sra.sample_attributes)
+rse_gene_SRP102444$sra.sample_attributes<-gsub("adapter sequence", "adapter_sequence", rse_gene_SRP102444$sra.sample_attributes)
+rse_gene_SRP102444$sra.sample_attributes<-gsub("hsv-1 infection", "hsv_1_infection", rse_gene_SRP102444$sra.sample_attributes)
+rse_gene_SRP102444$sra.sample_attributes<-gsub("rna isolation", "rna_isolation", rse_gene_SRP102444$sra.sample_attributes)
+```
+
+Ahora podemos observar que todas las muestras tienen los mismos atributos
+```{r step6, echo=TRUE}
+for(elemento in objeto) {
+    print(elemento)
+    print(glimpse(strsplit(rse_gene_SRP102444$sra.sample_attributes[elemento], "\\|")))
+}
+```
+
+
+Procesar la información como la provee SRA, expandirla, separar los atributos e incorporarlos al data frame.
+```{r step7, echo=TRUE}
+rse_gene_SRP102444 <- expand_sra_attributes(rse_gene_SRP102444)
+colData(rse_gene_SRP102444)[
+    ,
+    grepl("^sra_attribute", colnames(colData(rse_gene_SRP102444)))
+]
+```
+
+Para facilitar el análisis de los datos podemos convertir a factors algunas de las columnas del data frame.
+```{r step8}
+colData(rse_gene_SRP102444)$sra_attribute.hsv_1_infection<-factor(colData(rse_gene_SRP102444)$sra_attribute.hsv_1_infection)
+colData(rse_gene_SRP102444)$sra_attribute.source_name<-factor(colData(rse_gene_SRP102444)$sra_attribute.source_name)
+```
+
+Observar el resumen de las variables de interés.
+```{r step9, echo=TRUE}
+summary(as.data.frame(colData(rse_gene_SRP102444)[
+    ,
+    grepl("^sra_attribute.[hsv_1_infection|source_name]", colnames(colData(rse_gene_SRP102444)))
+]))
+```
+
+
+### Variable categórica
+Ahora los datos son más manejables, sin embargo podemos crear una variable categórica para agrupar a las células editadas con CRISPR/Cas9 de las que no lo fueron.
+```{r step10}
+rse_gene_SRP102444$edited_cell <- factor(ifelse(rse_gene_SRP102444$sra_attribute.source_name=="HeLa cells", "not_edited", "edited"))
+table(rse_gene_SRP102444$edited_cell)
+```
+
+## Filtrado
+Obtener la proporción de lecturas asignadas a genes.
+```{r step11, echo=TRUE}
+rse_gene_SRP102444$assigned_gene_prop <- rse_gene_SRP102444$recount_qc.gene_fc_count_all.assigned / rse_gene_SRP102444$recount_qc.gene_fc_count_all.total
+summary(rse_gene_SRP102444$assigned_gene_prop)
+```
+
+Observar el resumen por tipo de célula y momento de infección.
+```{r step12, echo=TRUE}
+with(colData(rse_gene_SRP102444), tapply(assigned_gene_prop, edited_cell, summary))
+
+with(colData(rse_gene_SRP102444), tapply(assigned_gene_prop, sra_attribute.hsv_1_infection, summary))
+```
+
+Graficar la calidad de las muestras.
+
+```{r step13, echo=TRUE}
+with(colData(rse_gene_SRP102444), plot(assigned_gene_prop, edited_cell))
+abline(v=0.3585,col = "red")
+
+hist(rse_gene_SRP102444$assigned_gene_prop)
+```
+
+Dado que la calidad de todas las muestras están por encima de 0.3585 no es necesario borrar ninguna de ellas.
+
+Calcular niveles medios de expresión de los genes en las muestras.
+```{r step14, echo=TRUE}
+gene_means <- rowMeans(assay(rse_gene_SRP102444, "counts"))
+summary(gene_means)
+```
+
+
+Como se puede apreciar existe una gran cantidad de genes muy poco expresados por lo que serán eliminados del análisis para obtener mejores resultados.
+```{r step15, echo=TRUE}
+# Guardar objeto por si luego se cambia de opinión
+rse_gene_SRP102444_unfiltered <- rse_gene_SRP102444
+
+# Eliminar genes con baja expresión
+rse_gene_SRP102444 <- rse_gene_SRP102444[gene_means > 0.08, ]
+
+# Visualizar dimensiones finales
+dim(rse_gene_SRP102444)
+```
+
+Finalmente obtenemos nuestros datos filtrados, de los cuales no se eliminó ninguna muestra pero sí se eliminaron 32,199 genes con muy baja expresión.
+```{r step16, echo=TRUE}
+# Porcentaje de genes que retuvimos
+round(nrow(rse_gene_SRP102444) / nrow(rse_gene_SRP102444_unfiltered) * 100, 2)
+```
+
+# Normalización
+Normalizar los datos con la librería edgeR.
+```{r norm}
+dge <- DGEList(
+    counts = assay(rse_gene_SRP102444, "counts"),
+    genes = rowData(rse_gene_SRP102444)
+)
+dge <- calcNormFactors(dge)
+```
+
+# Análisis de datos
+
+## Expresión diferencial
+Visualizar la expresión diferencial de acuerdo a cada atributo.
+```{r exp_df, echo=TRUE}
+# Boxplot por tipo de célula.
+ggplot(as.data.frame(colData(rse_gene_SRP102444)), aes(y = assigned_gene_prop, x = edited_cell)) +
+    geom_boxplot() +
+    theme_bw(base_size = 20) +
+    ylab("Assigned Gene Prop") +
+    xlab("Edited cell")
+
+# Boxplot por momento de infección
+ggplot(as.data.frame(colData(rse_gene_SRP102444)), aes(y = assigned_gene_prop, x = sra_attribute.hsv_1_infection)) +
+    geom_boxplot() +
+    theme_bw(base_size = 20) +
+    ylab("Assigned Gene Prop") +
+    xlab("Time infection")
+```
+
+## Modelo estadístico
+De acuerdo a las observaciones previas es posible establecer un modelo estadístico utilizando las variables edited_cell e hsv_1_infection.
+```{r stc_modl}
+mod <- model.matrix(~ sra_attribute.hsv_1_infection + edited_cell + assigned_gene_prop,
+                    data = colData(rse_gene_SRP102444)
+)
+colnames(mod)
+```
+
+Analizar los datos estadísticos de la expresión diferencial.
+```{r est_var_mean, echo=TRUE}
+vGene <- voom(dge, mod, plot = TRUE)
+
+# Ajustar datos
+eb_results <- eBayes(lmFit(vGene))
+
+de_results <- topTable(
+    eb_results,
+    coef = 2,
+    number = nrow(rse_gene_SRP102444),
+    sort.by = "none"
+)
+dim(de_results)
+
+
+head(de_results)
+
+# Visualizar resultados estadísticos
+plotMA(eb_results, coef = 2)
+
+
+volcanoplot(eb_results, coef = 2, highlight = 3, names = de_results$gene_name)
+```
+
+En este último plot es posible observar los genes más expresados en células infectadas por el virus del herpes tipo 1.
+
+Analizar patrones de expresión de genes.
+```{r exp_genes, echo=TRUE}
+# Extraer valores de los genes de interés
+exprs_heatmap <- vGene$E[rank(de_results$adj.P.Val) <= 50, ]
+
+# Crear una tabla con información de las muestras y con nombres de columnas más amigables
+df <- as.data.frame(colData(rse_gene_SRP102444)[, c("sra_attribute.hsv_1_infection", "edited_cell")])
+colnames(df) <- c("Infection_time", "Cell_type")
+
+# Cambiar los identificadores por los nombres de los genes.
+nombres <- rownames(de_results)
+rownames(exprs_heatmap) <- de_results$gene_name[match(rownames(exprs_heatmap), nombres)]
+
+# Realizar un heatmap
+pheatmap(
+    exprs_heatmap,
+    cluster_rows = TRUE,
+    cluster_cols = TRUE,
+    show_rownames = TRUE,
+    show_colnames = FALSE,
+    annotation_col = df
+)
+
+# Conviertiendo los grupos de infección en colores
+col.group <- df$Infection_time
+levels(col.group) <- brewer.pal(nlevels(col.group), "Set1")
+
+col.group <- as.character(col.group)
+
+# MDS por momento de infección
+plotMDS(vGene$E, labels = df$Infection_time, col = col.group)
+
+
+# Conviertiendo los grupos de tipo de celula en colores
+col.sex <- df$Cell_type
+levels(col.sex) <- brewer.pal(nlevels(col.sex), "Dark2")
+
+col.sex <- as.character(col.sex)
+
+# MDS por tipo de célula
+plotMDS(vGene$E, labels = df$Cell_type, col = col.sex)
+
+```

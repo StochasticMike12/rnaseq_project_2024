@@ -1,0 +1,99 @@
+# Análisis de datos
+
+## Expresión diferencial
+Visualizar la expresión diferencial de acuerdo a cada atributo.
+```{r exp_df, echo=TRUE}
+# Boxplot por tipo de célula.
+ggplot(as.data.frame(colData(rse_gene_SRP102444)), aes(y = assigned_gene_prop, x = edited_cell)) +
+    geom_boxplot() +
+    theme_bw(base_size = 20) +
+    ylab("Assigned Gene Prop") +
+    xlab("Edited cell")
+
+# Boxplot por momento de infección
+ggplot(as.data.frame(colData(rse_gene_SRP102444)), aes(y = assigned_gene_prop, x = sra_attribute.hsv_1_infection)) +
+    geom_boxplot() +
+    theme_bw(base_size = 20) +
+    ylab("Assigned Gene Prop") +
+    xlab("Time infection")
+```
+
+## Modelo estadístico
+De acuerdo a las observaciones previas es posible establecer un modelo estadístico utilizando las variables edited_cell e hsv_1_infection.
+```{r stc_modl}
+mod <- model.matrix(~ sra_attribute.hsv_1_infection + edited_cell + assigned_gene_prop,
+                    data = colData(rse_gene_SRP102444)
+)
+colnames(mod)
+```
+
+Analizar los datos estadísticos de la expresión diferencial.
+```{r est_var_mean, echo=TRUE}
+vGene <- voom(dge, mod, plot = TRUE)
+
+# Ajustar datos
+eb_results <- eBayes(lmFit(vGene))
+
+de_results <- topTable(
+    eb_results,
+    coef = 2,
+    number = nrow(rse_gene_SRP102444),
+    sort.by = "none"
+)
+dim(de_results)
+
+
+head(de_results)
+
+# Visualizar resultados estadísticos
+plotMA(eb_results, coef = 2)
+
+
+volcanoplot(eb_results, coef = 2, highlight = 3, names = de_results$gene_name)
+```
+
+En este último plot es posible observar los genes más expresados en células infectadas por el virus del herpes tipo 1.
+
+Analizar patrones de expresión de genes.
+```{r exp_genes, echo=TRUE}
+# Extraer valores de los genes de interés
+exprs_heatmap <- vGene$E[rank(de_results$adj.P.Val) <= 50, ]
+
+# Crear una tabla con información de las muestras y con nombres de columnas más amigables
+df <- as.data.frame(colData(rse_gene_SRP102444)[, c("sra_attribute.hsv_1_infection", "edited_cell")])
+colnames(df) <- c("Infection_time", "Cell_type")
+
+# Cambiar los identificadores por los nombres de los genes.
+nombres <- rownames(de_results)
+rownames(exprs_heatmap) <- de_results$gene_name[match(rownames(exprs_heatmap), nombres)]
+
+# Realizar un heatmap
+pheatmap(
+    exprs_heatmap,
+    cluster_rows = TRUE,
+    cluster_cols = TRUE,
+    show_rownames = TRUE,
+    show_colnames = FALSE,
+    annotation_col = df
+)
+
+# Conviertiendo los grupos de infección en colores
+col.group <- df$Infection_time
+levels(col.group) <- brewer.pal(nlevels(col.group), "Set1")
+
+col.group <- as.character(col.group)
+
+# MDS por momento de infección
+plotMDS(vGene$E, labels = df$Infection_time, col = col.group)
+
+
+# Conviertiendo los grupos de tipo de celula en colores
+col.sex <- df$Cell_type
+levels(col.sex) <- brewer.pal(nlevels(col.sex), "Dark2")
+
+col.sex <- as.character(col.sex)
+
+# MDS por tipo de célula
+plotMDS(vGene$E, labels = df$Cell_type, col = col.sex)
+
+```
