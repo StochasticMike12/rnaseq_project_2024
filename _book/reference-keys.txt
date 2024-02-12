@@ -23,3 +23,7 @@ sharing-your-book
 publishing
 pages
 metadata-for-sharing
+presentación
+datos-de-trabajo
+url-your-book-url-like-httpsbookdown.orgyihuibookdown
+librerías
