@@ -1,13 +1,5 @@
-Welcome! 
-
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
-
-This template provides a skeleton file structure that you can edit to create your book. 
-
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
-
-Additional resources:
-
-The **bookdown** book: https://bookdown.org/yihui/bookdown/
-
-The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
+# Proyecto Final Módulo 1: "Análisis de datos de secuenciación masiva"
+Este reposritorio está dedicado al proyecto final del módulo 1 "Análisis de 
+datos de secuenciación masiva" del curso de Bioinformática y estadística 2 de la Licenciatura en Ciencias Genómicas. 
+El proyecto tiene como objetivo realizar un análisis estadístico de datos de RNA-seq utilizando diversos paquetes de R para finalmente llegar a conclusiones sobre el estudio a analizar.
+Para visualizar de manera interactiva: 
