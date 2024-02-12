@@ -4,3 +4,4 @@ datos de secuenciación masiva" del curso de Bioinformática y estadística 2 de
 El proyecto tiene como objetivo realizar un análisis estadístico de datos de RNA-seq utilizando diversos paquetes de R para finalmente llegar a conclusiones sobre el estudio a analizar.
 
 - Para visualizar de manera interactiva: 
+
