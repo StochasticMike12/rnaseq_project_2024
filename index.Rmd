@@ -157,7 +157,7 @@ with(colData(rse_gene_SRP102444), tapply(assigned_gene_prop, sra_attribute.hsv_1
 
 Graficar la calidad de las muestras.
 
-```{r step13, echo=TRUE}
+```{r step13}
 with(colData(rse_gene_SRP102444), plot(assigned_gene_prop, edited_cell))
 abline(v=0.3585,col = "red")
 
