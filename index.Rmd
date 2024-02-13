@@ -81,7 +81,7 @@ Existen 26 muestras.
 
 Verificar que los atributos de las muestras sean consistentes.
 ```{r step3, echo=TRUE}
-objeto<-26
+objeto <- 1:26
 for(elemento in objeto) {
     print(elemento)
     print(glimpse(strsplit(rse_gene_SRP102444$sra.sample_attributes[elemento], "\\|")))
