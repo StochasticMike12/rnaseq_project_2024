@@ -207,14 +207,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb34-4"><a href="análisis-de-datos.html#cb34-4" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
 <span id="cb34-5"><a href="análisis-de-datos.html#cb34-5" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Assigned Gene Prop&quot;</span>) <span class="sc">+</span></span>
 <span id="cb34-6"><a href="análisis-de-datos.html#cb34-6" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Edited cell&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/exp_df-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/exp_df-1.png" width="672" /></p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="análisis-de-datos.html#cb35-1" tabindex="-1"></a><span class="co"># Boxplot por momento de infección</span></span>
 <span id="cb35-2"><a href="análisis-de-datos.html#cb35-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">as.data.frame</span>(<span class="fu">colData</span>(rse_gene_SRP102444)), <span class="fu">aes</span>(<span class="at">y =</span> assigned_gene_prop, <span class="at">x =</span> sra_attribute.hsv_1_infection)) <span class="sc">+</span></span>
 <span id="cb35-3"><a href="análisis-de-datos.html#cb35-3" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
 <span id="cb35-4"><a href="análisis-de-datos.html#cb35-4" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
 <span id="cb35-5"><a href="análisis-de-datos.html#cb35-5" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Assigned Gene Prop&quot;</span>) <span class="sc">+</span></span>
 <span id="cb35-6"><a href="análisis-de-datos.html#cb35-6" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Time infection&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/exp_df-2.png" width="672" /></p>
+<p><img src="main_files/figure-html/exp_df-2.png" width="672" /></p>
 </div>
 <div id="modelo-estadístico" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Modelo estadístico<a href="análisis-de-datos.html#modelo-estadístico" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -231,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [6] &quot;assigned_gene_prop&quot;</code></pre>
 <p>Analizar los datos estadísticos de la expresión diferencial.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="análisis-de-datos.html#cb38-1" tabindex="-1"></a>vGene <span class="ot">&lt;-</span> <span class="fu">voom</span>(dge, mod, <span class="at">plot =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/est_var_mean-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/est_var_mean-1.png" width="672" /></p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="análisis-de-datos.html#cb39-1" tabindex="-1"></a><span class="co"># Ajustar datos</span></span>
 <span id="cb39-2"><a href="análisis-de-datos.html#cb39-2" tabindex="-1"></a>eb_results <span class="ot">&lt;-</span> <span class="fu">eBayes</span>(<span class="fu">lmFit</span>(vGene))</span>
 <span id="cb39-3"><a href="análisis-de-datos.html#cb39-3" tabindex="-1"></a></span>
@@ -274,9 +274,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## ENSG00000239945.1  1.4763372 0.15243657 0.6812576 -4.938413</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="análisis-de-datos.html#cb43-1" tabindex="-1"></a><span class="co"># Visualizar resultados estadísticos</span></span>
 <span id="cb43-2"><a href="análisis-de-datos.html#cb43-2" tabindex="-1"></a><span class="fu">plotMA</span>(eb_results, <span class="at">coef =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/est_var_mean-2.png" width="672" /></p>
+<p><img src="main_files/figure-html/est_var_mean-2.png" width="672" /></p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="análisis-de-datos.html#cb44-1" tabindex="-1"></a><span class="fu">volcanoplot</span>(eb_results, <span class="at">coef =</span> <span class="dv">2</span>, <span class="at">highlight =</span> <span class="dv">3</span>, <span class="at">names =</span> de_results<span class="sc">$</span>gene_name)</span></code></pre></div>
-<p><img src="_main_files/figure-html/est_var_mean-3.png" width="672" /></p>
+<p><img src="main_files/figure-html/est_var_mean-3.png" width="672" /></p>
 <p>En este último plot es posible observar los genes más expresados en células infectadas por el virus del herpes tipo 1.</p>
 <p>Analizar patrones de expresión de genes.</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="análisis-de-datos.html#cb45-1" tabindex="-1"></a><span class="co"># Extraer valores de los genes de interés</span></span>
@@ -298,7 +298,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb46-7"><a href="análisis-de-datos.html#cb46-7" tabindex="-1"></a>    <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb46-8"><a href="análisis-de-datos.html#cb46-8" tabindex="-1"></a>    <span class="at">annotation_col =</span> df</span>
 <span id="cb46-9"><a href="análisis-de-datos.html#cb46-9" tabindex="-1"></a>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/heatmap-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/heatmap-1.png" width="672" /></p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="análisis-de-datos.html#cb47-1" tabindex="-1"></a><span class="co"># Conviertiendo los grupos de infección en colores</span></span>
 <span id="cb47-2"><a href="análisis-de-datos.html#cb47-2" tabindex="-1"></a>col.group <span class="ot">&lt;-</span> df<span class="sc">$</span>Infection_time</span>
 <span id="cb47-3"><a href="análisis-de-datos.html#cb47-3" tabindex="-1"></a><span class="fu">levels</span>(col.group) <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="fu">nlevels</span>(col.group), <span class="st">&quot;Set1&quot;</span>)</span>
@@ -307,7 +307,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb47-6"><a href="análisis-de-datos.html#cb47-6" tabindex="-1"></a></span>
 <span id="cb47-7"><a href="análisis-de-datos.html#cb47-7" tabindex="-1"></a><span class="co"># MDS por momento de infección</span></span>
 <span id="cb47-8"><a href="análisis-de-datos.html#cb47-8" tabindex="-1"></a><span class="fu">plotMDS</span>(vGene<span class="sc">$</span>E, <span class="at">labels =</span> df<span class="sc">$</span>Infection_time, <span class="at">col =</span> col.group)</span></code></pre></div>
-<p><img src="_main_files/figure-html/plots-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/plots-1.png" width="672" /></p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="análisis-de-datos.html#cb48-1" tabindex="-1"></a><span class="co"># Conviertiendo los grupos de tipo de celula en colores</span></span>
 <span id="cb48-2"><a href="análisis-de-datos.html#cb48-2" tabindex="-1"></a>col.sex <span class="ot">&lt;-</span> df<span class="sc">$</span>Cell_type</span>
 <span id="cb48-3"><a href="análisis-de-datos.html#cb48-3" tabindex="-1"></a><span class="fu">levels</span>(col.sex) <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="fu">nlevels</span>(col.sex), <span class="st">&quot;Dark2&quot;</span>)</span></code></pre></div>
@@ -316,7 +316,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb50-2"><a href="análisis-de-datos.html#cb50-2" tabindex="-1"></a></span>
 <span id="cb50-3"><a href="análisis-de-datos.html#cb50-3" tabindex="-1"></a><span class="co"># MDS por tipo de célula</span></span>
 <span id="cb50-4"><a href="análisis-de-datos.html#cb50-4" tabindex="-1"></a><span class="fu">plotMDS</span>(vGene<span class="sc">$</span>E, <span class="at">labels =</span> df<span class="sc">$</span>Cell_type, <span class="at">col =</span> col.sex)</span></code></pre></div>
-<p><img src="_main_files/figure-html/plots-2.png" width="672" /></p>
+<p><img src="main_files/figure-html/plots-2.png" width="672" /></p>
 </div>
 </div>
             </section>
