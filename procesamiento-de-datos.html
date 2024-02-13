@@ -938,9 +938,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Graficar la calidad de las muestras.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="procesamiento-de-datos.html#cb25-1" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">colData</span>(rse_gene_SRP102444), <span class="fu">plot</span>(assigned_gene_prop, edited_cell))</span>
 <span id="cb25-2"><a href="procesamiento-de-datos.html#cb25-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.3585</span>,<span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/step13-1.png" width="672" /></p>
+<p><img src="main_files/figure-html/step13-1.png" width="672" /></p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="procesamiento-de-datos.html#cb26-1" tabindex="-1"></a><span class="fu">hist</span>(rse_gene_SRP102444<span class="sc">$</span>assigned_gene_prop)</span></code></pre></div>
-<p><img src="_main_files/figure-html/step13-2.png" width="672" /></p>
+<p><img src="main_files/figure-html/step13-2.png" width="672" /></p>
 <p>Dado que la calidad de todas las muestras están por encima de 0.3585 no es necesario borrar ninguna de ellas.</p>
 <p>Calcular niveles medios de expresión de los genes en las muestras.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="procesamiento-de-datos.html#cb27-1" tabindex="-1"></a>gene_means <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(<span class="fu">assay</span>(rse_gene_SRP102444, <span class="st">&quot;counts&quot;</span>))</span>
